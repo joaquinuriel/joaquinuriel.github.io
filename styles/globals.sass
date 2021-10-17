@@ -1,0 +1,69 @@
+// stylelint-disable
+@import "nav"
+@import "box"
+@import "input"
+// stylelint-enable
+
+html
+  --primary: #4666ff
+  --secondary: #75aadb
+  --accent: #fcbf49
+
+  --success: #5fa
+  --alert: #fa5
+  --error: #f55
+
+  --darker: #111
+  --dark: #333
+  --grey: #555
+  --light: #aaa
+  --lighter: #eee
+
+  --shadow-sm: 0 5px 10px -5px #5555
+  --shadow-md: 0 15px 30px -15px #5555
+  --shadow-lg: 0 25px 50px -25px #5555
+
+  --fast: 250ms
+  --slow: 750ms
+
+body
+  padding: 25px
+  margin: 0
+  background: white
+  font-family: "Inter var"
+  // font-feature-settings: "salt"
+
+  @media (prefers-color-scheme: dark)
+    background: var(--darker)
+    color: white
+
+a
+  color: inherit
+  text-decoration: none
+
+*
+  box-sizing: border-box
+
+@font-face
+  font-family: Manrope
+  font-weight: 200 800
+  src: url(/manrope.ttf)
+
+main 
+  display: flex 
+  flex-direction: column 
+  align-items: start
+  gap: 25px
+
+h1
+  margin: 0
+  font-family: Manrope
+  font-size: 36px
+  font-weight: 800
+  line-height: 1.2
+
+.flexbox
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 10px

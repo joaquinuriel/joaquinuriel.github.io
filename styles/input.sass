@@ -1,0 +1,52 @@
+.input
+    display: flex
+    height: 50px
+    align-self: stretch
+    border: solid 3px var(--lighter)
+    background: var(--lighter)
+    border-radius: 10px
+    color: var(--light)
+
+    &:hover
+        background: white
+
+    &:focus-within
+        border: solid 3px var(--primary)
+        background: white
+        color: var(--primary)
+
+    &.valid
+        border: solid 3px var(--success)
+        background: white
+        color: var(--success)
+
+        &:hover, &:focus-within
+            border: solid 3px var(--primary)
+            color: var(--primary)
+
+    &.invalid
+        border: solid 3px var(--error)
+        background: white
+        color: var(--error)
+
+        &:hover, &:focus-within
+            border: solid 3px var(--primary)
+            color: var(--primary)
+
+    input
+        flex: 1
+        padding: 0 12px
+        border: 0
+        background: none
+        border-radius: 10px
+        caret-color: var(--primary)
+        color: var(--dark)
+        outline: 0
+
+        &::placeholder
+            font: 400 16px Inter
+
+    svg
+        width: 24px
+        height: 24px
+        margin: 10px
