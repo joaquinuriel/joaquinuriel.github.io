@@ -6,6 +6,7 @@
     background: var(--lighter)
     border-radius: 10px
     color: var(--light)
+    transition: 250ms
 
     &:hover
         background: white
@@ -17,20 +18,28 @@
 
     &.valid
         border: solid 3px var(--success)
-        background: white
+        background: var(--success-bg)
         color: var(--success)
 
-        &:hover, &:focus-within
+        &:hover
+            background: white
+
+        &:focus-within
             border: solid 3px var(--primary)
+            background: white
             color: var(--primary)
 
     &.invalid
         border: solid 3px var(--error)
-        background: white
+        background: var(--error-bg)
         color: var(--error)
 
-        &:hover, &:focus-within
+        &:hover
+            background: white
+
+        &:focus-within
             border: solid 3px var(--primary)
+            background: white
             color: var(--primary)
 
     input

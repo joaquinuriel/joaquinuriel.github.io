@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { At, Key } from "phosphor-react";
+import { At, Key, MagnifyingGlass } from "phosphor-react";
 import * as react from "react";
 import { InputHandler, Props } from "./types";
 
 export function Input({ type, placeholder, value, onChange }: Props) {
   const email = type === "email";
+  const password = type === "password";
   const check = (pattern: RegExp) =>
     value ? (value.match(pattern) ? "valid" : "invalid") : "empty";
   return (
@@ -19,11 +20,14 @@ export function Input({ type, placeholder, value, onChange }: Props) {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        // animate={{ visibility: "visible" }}
       />
-      {type === "email" ? (
+      {email ? (
         <At weight="bold" />
-      ) : type === "password" ? (
+      ) : password ? (
         <Key weight="bold" />
+      ) : placeholder === "buscar" ? (
+        <MagnifyingGlass />
       ) : null}
     </motion.div>
   );
@@ -33,7 +37,7 @@ export function withInput(
   placeholder: string,
   type = placeholder === "correo electronico"
     ? "email"
-    : "contraseña"
+    : placeholder === "contraseña"
     ? "password"
     : "text"
 ) {
