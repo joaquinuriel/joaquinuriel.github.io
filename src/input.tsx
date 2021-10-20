@@ -3,7 +3,8 @@ import { At, Key, MagnifyingGlass } from "phosphor-react";
 import * as react from "react";
 import { InputHandler, Props } from "./types";
 
-export function Input({ type, placeholder, value, onChange }: Props) {
+export function Input(props: Props) {
+  const { placeholder, type, value } = props;
   const email = type === "email";
   const password = type === "password";
   const check = (pattern: RegExp) =>
@@ -14,13 +15,12 @@ export function Input({ type, placeholder, value, onChange }: Props) {
       layout
     >
       <motion.input
+        {...props}
+        autoComplete="on"
         layout
         layoutId={"input" + type}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        // animate={{ visibility: "visible" }}
+        initial={{ visibility: "hidden", opacity: 0 }}
+        animate={{ visibility: "visible", opacity: 1 }}
       />
       {email ? (
         <At weight="bold" />
@@ -47,6 +47,7 @@ export function withInput(
     placeholder,
     type,
     value,
+    set,
     onChange,
   };
 }

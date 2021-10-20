@@ -1,7 +1,9 @@
 import {
   createUserWithEmailAndPassword as signUp,
+  GoogleAuthProvider as google,
   sendPasswordResetEmail as sendEmail,
   signInWithEmailAndPassword as signIn,
+  signInWithPopup as popUp,
   updateProfile,
 } from "firebase/auth";
 import { motion } from "framer-motion";
@@ -12,12 +14,20 @@ import { Input, withInput } from "src/input";
 import Layout from "src/layout";
 import { handle } from "src/utils";
 
+const Box = ({ children }: any) => (
+  <motion.div className="box" layout layoutId="box">
+    {children}
+  </motion.div>
+);
+
 export default function Account() {
   const { currentUser } = auth;
 
   const email = withInput("correo electronico");
   const password = withInput("contraseña");
   const username = withInput("username");
+
+  console.log(email, password);
 
   const regex = /\S{6,}/gi;
   const eregex = /\S+@\S+\.[a-z]{2,}/gi;
@@ -29,20 +39,29 @@ export default function Account() {
   const [willReset, setWillReset] = useState(false);
   const [hasReset, setHasReset] = useState(false);
 
-  const signUpHandler = regex.test(username.value)
-    ? async () => {
-        const [res, err] = await handle(
-          signUp(auth, email.value, password.value)
-        );
-        res
-          ? updateProfile(res.user, { displayName: username.value })
-          : console.log(err);
-      }
-    : () => alert("invalid username");
+  console.log(willSignUp, signingUp, willSignIn, signingIn);
+
+  const signUpHandler = () =>
+    eregex.test(email.value)
+      ? regex.test(password.value)
+        ? setSigningUp(true)
+        : alert("invalid password")
+      : alert("invalid email");
+
+  const signingUpHandler = async () => {
+    if (regex.test(username.value)) return alert("invalid username");
+    const [res, err] = await handle(signUp(auth, email.value, password.value));
+    if (err) return alert(err.code);
+    await updateProfile(res!.user, { displayName: username.value });
+    setWillSignUp(false);
+    setSigningUp(false);
+  };
 
   const signInHandler = async () => {
     const [res, err] = await handle(signIn(auth, email.value, password.value));
-    res ? console.log(res.user.displayName) : alert(err.code);
+    if (err) return alert(err.code);
+    setWillSignIn(false);
+    setSigningIn(false);
   };
 
   return willSignUp ? (
@@ -51,36 +70,47 @@ export default function Account() {
       <Layout>
         <motion.h1>Sign Up</motion.h1>
         <Input {...username} />
-        <motion.div className="box">
-          <Btn id="btn1" onClick={() => setSigningUp(false)}>
+        <Box>
+          <Btn
+            id="btn1"
+            onClick={() => {
+              setSigningUp(false);
+              email.set(email.value);
+              password.set(password.value);
+            }}
+          >
             Atras
           </Btn>
-          <Btn id="btn2" onClick={signUpHandler}>
+          <Btn id="btn2" onClick={signingUpHandler}>
             Crear Cuenta
           </Btn>
-        </motion.div>
+        </Box>
       </Layout>
     ) : (
       // Sign Up with Email and Password
       <Layout>
         <motion.h1>Sign Up</motion.h1>
-        <Input {...email} />
-        <Input {...password} />
-        <motion.div className="box">
-          <Btn
-            id="btn1"
-            onClick={() =>
-              eregex.test(email.value)
-                ? regex.test(password.value)
-                  ? setSigningUp(true)
-                  : alert("invalid password")
-                : alert("invalid email")
-            }
-          >
+        <form>
+          <fieldset>
+            <Input {...email} />
+            <Input {...password} />
+          </fieldset>
+        </form>
+        <Box>
+          <Btn id="btn1" onClick={signUpHandler}>
             Siguiente
           </Btn>
-          <Btn id="btn2">Google</Btn>
-        </motion.div>
+          <Btn
+            onClick={async () => {
+              const [res, err] = await handle(popUp(auth, new google()));
+              res ? setWillSignUp(false) : alert(err.code);
+              console.log(res, err);
+            }}
+            id="btn2"
+          >
+            Google
+          </Btn>
+        </Box>
         <motion.p
           layout
           layoutId="p"
@@ -96,18 +126,18 @@ export default function Account() {
   ) : willSignIn ? (
     hasReset ? (
       <Layout>
-        <h1>Email Sent</h1>
-        <motion.div className="box">
+        <motion.h1>Email Sent</motion.h1>
+        <Box>
           <Btn id="btn1" onClick={() => setHasReset(false)}>
             Return
           </Btn>
-        </motion.div>
+        </Box>
       </Layout>
     ) : willReset ? (
       <Layout>
-        <h1>Recover Password</h1>
+        <motion.h1>Reset Password</motion.h1>
         <Input {...email} />
-        <motion.div className="box">
+        <Box>
           <Btn id="btn1" onClick={() => setWillReset(false)}>
             Cancelar
           </Btn>
@@ -125,21 +155,21 @@ export default function Account() {
           >
             Enviar email
           </Btn>
-        </motion.div>
+        </Box>
       </Layout>
     ) : signingIn ? (
       // Sign In with Password
       <Layout>
-        <h1>Sign In</h1>
+        <motion.h1>Sign In</motion.h1>
         <Input {...password} />
-        <motion.div className="box">
+        <Box>
           <Btn id="btn1" onClick={() => setSigningIn(false)}>
             Atras
           </Btn>
           <Btn id="btn2" onClick={signInHandler}>
             Entrar
           </Btn>
-        </motion.div>
+        </Box>
         <motion.p layout layoutId="p" onClick={() => setWillReset(true)}>
           Olvide mi contraseña
         </motion.p>
@@ -147,14 +177,23 @@ export default function Account() {
     ) : (
       // Sign In with Email
       <Layout>
-        <h1>Sign In</h1>
+        <motion.h1>Sign In</motion.h1>
         <Input {...email} />
-        <motion.div className="box">
+        <Box>
           <Btn id="btn1" onClick={() => setSigningIn(true)}>
             Siguiente
           </Btn>
-          <Btn id="btn2">Google</Btn>
-        </motion.div>
+          <Btn
+            onClick={async () => {
+              const [res, err] = await handle(popUp(auth, new google()));
+              console.log(res, err);
+              res ? setWillSignIn(false) : alert(err.code);
+            }}
+            id="btn2"
+          >
+            Google
+          </Btn>
+        </Box>
         <motion.p
           layout
           layoutId="p"
@@ -171,8 +210,13 @@ export default function Account() {
     // Signed In
     <Layout>
       <motion.h1>Account</motion.h1>
+      <motion.h2>{currentUser!.displayName}</motion.h2>
       <motion.p>{currentUser!.email}</motion.p>
-      <Btn id="btn1">Cerrar sesion</Btn>
+      <Box>
+        <Btn id="btn1" onClick={() => setWillSignIn(true)}>
+          Cerrar sesion
+        </Btn>
+      </Box>
     </Layout>
   );
 }
