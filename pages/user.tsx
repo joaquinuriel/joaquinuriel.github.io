@@ -41,12 +41,15 @@ export default function Account() {
 
   console.log(willSignUp, signingUp, willSignIn, signingIn);
 
-  const signUpHandler = () =>
-    eregex.test(email.value)
-      ? regex.test(password.value)
-        ? setSigningUp(true)
-        : alert("invalid password")
-      : alert("invalid email");
+  const signUpHandler = () => {
+    if (!eregex.test(email.value)) {
+      // email.setState("invalid");
+      alert("invalid email");
+    } else if (!regex.test(password.value)) {
+      // email.setState("invalid");
+      alert("invalid password");
+    } else setSigningUp(true);
+  };
 
   const signingUpHandler = async () => {
     if (regex.test(username.value)) return alert("invalid username");
