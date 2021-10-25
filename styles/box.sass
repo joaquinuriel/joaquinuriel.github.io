@@ -1,23 +1,33 @@
+@import "utils"
+
 .box
     display: flex
     flex-wrap: wrap
     gap: 10px
 
-    button
-        height: 50px
-        padding: 0 25px
-        border: 0
-        background: var(--lighter)
-        border-radius: 10px
+button
+    height: 50px
+    padding: 0 25px
+    border: 0
+    background: var(--lighter)
+    border-radius: 10px
+    color: var(--darker)
+    cursor: pointer
+    font: 450 16px "Inter var"
+    outline: 0
+    transition: 250ms
+
+    @media screen and ( prefers-color-scheme: dark )
+        background: var(--dark)
+        color: var(--lighter)
+
+    &:hover
+        filter: brightness(.9)
+
+button + button, .golden
+    background: var(--primary)
+    color: white
+
+    +dark
+        background: linear-gradient(to right, #fede55, #fcbf49)
         color: var(--darker)
-        cursor: pointer
-        font: 400 16px Inter
-        outline: 0
-        transition: 250ms
-
-        &:hover
-            filter: brightness(.9)
-
-    button + button
-        background: var(--primary)
-        color: white

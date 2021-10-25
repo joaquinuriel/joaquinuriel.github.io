@@ -1,3 +1,5 @@
+@use "utils"
+
 .input
     display: flex
     height: 50px
@@ -8,13 +10,29 @@
     color: var(--light)
     transition: 250ms
 
-    &:hover
+    +dark
+        border: solid 3px var(--dark)
+        background: var(--dark)
+        &:hover
+            background: var(--darker)
+        &:focus-within
+            border: solid 3px var(--accent)
+            background: var(--darker)
+            color: var(--accent)
+
+    %hover
         background: white
 
-    &:focus-within
+    %focus
         border: solid 3px var(--primary)
         background: white
         color: var(--primary)
+
+    &:hover
+        @extend %hover
+
+    &:focus-within
+        @extend %focus
 
     &.valid
         border: solid 3px var(--success)
@@ -22,12 +40,18 @@
         color: var(--success)
 
         &:hover
-            background: white
+            @extend %hover
 
         &:focus-within
-            border: solid 3px var(--primary)
-            background: white
-            color: var(--primary)
+            @extend %focus
+
+        +dark
+            &:hover
+                background: var(--darker)
+            &:focus-within
+                border: solid 3px var(--accent)
+                background: var(--darker)
+                color: var(--accent)
 
     &.invalid
         border: solid 3px var(--error)
@@ -35,12 +59,18 @@
         color: var(--error)
 
         &:hover
-            background: white
+            @extend %hover
 
         &:focus-within
-            border: solid 3px var(--primary)
-            background: white
-            color: var(--primary)
+            @extend %focus
+
+        +dark
+            &:hover
+                background: var(--darker)
+            &:focus-within
+                border: solid 3px var(--accent)
+                background: var(--darker)
+                color: var(--accent)
 
     input
         flex: 1
@@ -53,8 +83,9 @@
         font: 400 16px Inter
         outline: 0
 
-        // &::placeholder
-            // font: 400 16px Inter
+        @media screen and ( prefers-color-scheme: dark )
+            caret-color: var(--accent)
+            color: var(--light)
 
     svg
         width: 24px

@@ -4,7 +4,8 @@ import {
   sendPasswordResetEmail as sendEmail,
   signInWithEmailAndPassword as signIn,
   signInWithPopup as popUp,
-  updateProfile,
+  signOut,
+  updateProfile
 } from "firebase/auth";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -22,17 +23,19 @@ const Box = ({ children }: any) => (
 
 export default function Account() {
   const { currentUser } = auth;
+  const [user, updateUser] = useState(currentUser);
+  auth.onAuthStateChanged(updateUser);
 
   const email = withInput("correo electronico");
   const password = withInput("contraseña");
   const username = withInput("username");
 
-  console.log(email, password);
+  console.log(user, email, password);
 
   const regex = /\S{6,}/gi;
   const eregex = /\S+@\S+\.[a-z]{2,}/gi;
 
-  const [willSignUp, setWillSignUp] = useState(!currentUser);
+  const [willSignUp, setWillSignUp] = useState(!user);
   const [willSignIn, setWillSignIn] = useState(false);
   const [signingUp, setSigningUp] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
@@ -52,7 +55,7 @@ export default function Account() {
   };
 
   const signingUpHandler = async () => {
-    if (regex.test(username.value)) return alert("invalid username");
+    if (!regex.test(username.value)) return alert("invalid username");
     const [res, err] = await handle(signUp(auth, email.value, password.value));
     if (err) return alert(err.code);
     await updateProfile(res!.user, { displayName: username.value });
@@ -103,7 +106,7 @@ export default function Account() {
           <Btn id="btn1" onClick={signUpHandler}>
             Siguiente
           </Btn>
-          <Btn
+          {/* <Btn
             onClick={async () => {
               const [res, err] = await handle(popUp(auth, new google()));
               res ? setWillSignUp(false) : alert(err.code);
@@ -112,7 +115,7 @@ export default function Account() {
             id="btn2"
           >
             Google
-          </Btn>
+          </Btn> */}
         </Box>
         <motion.p
           layout
@@ -124,6 +127,19 @@ export default function Account() {
         >
           Iniciar sesion
         </motion.p>
+        <Box>
+          <Btn
+            cn="golden"
+            id="btn2"
+            onClick={async () => {
+              const [res, err] = await handle(popUp(auth, new google()));
+              res ? setWillSignUp(false) : alert(err.code);
+              console.log(res, err);
+            }}
+          >
+            Google
+          </Btn>
+        </Box>
       </Layout>
     )
   ) : willSignIn ? (
@@ -148,12 +164,9 @@ export default function Account() {
             id="btn2"
             onClick={async () => {
               const [, err] = await handle(sendEmail(auth, email.value));
-              err
-                ? alert(err.code)
-                : (() => {
-                    setWillReset(false);
-                    setHasReset(true);
-                  })();
+              if (err) return alert(err.code);
+              setWillReset(false);
+              setHasReset(true);
             }}
           >
             Enviar email
@@ -186,7 +199,7 @@ export default function Account() {
           <Btn id="btn1" onClick={() => setSigningIn(true)}>
             Siguiente
           </Btn>
-          <Btn
+          {/* <Btn
             onClick={async () => {
               const [res, err] = await handle(popUp(auth, new google()));
               console.log(res, err);
@@ -195,7 +208,7 @@ export default function Account() {
             id="btn2"
           >
             Google
-          </Btn>
+          </Btn> */}
         </Box>
         <motion.p
           layout
@@ -207,16 +220,31 @@ export default function Account() {
         >
           Crear Cuenta
         </motion.p>
+        <Box>
+          <Btn
+            onClick={async () => {
+              const [res, err] = await handle(popUp(auth, new google()));
+              console.log(res, err);
+              res ? setWillSignIn(false) : alert(err.code);
+            }}
+            id="btn2"
+          >
+            Google
+          </Btn>
+        </Box>
       </Layout>
     )
   ) : (
     // Signed In
     <Layout>
       <motion.h1>Account</motion.h1>
-      <motion.h2>{currentUser!.displayName}</motion.h2>
-      <motion.p>{currentUser!.email}</motion.p>
+      <motion.h2>{user!.displayName}</motion.h2>
+      <motion.p>{user!.email}</motion.p>
       <Box>
-        <Btn id="btn1" onClick={() => setWillSignIn(true)}>
+            <Btn id="btn1" onClick={() => {
+              setWillSignIn(true)
+               signOut(auth);
+            }}>
           Cerrar sesion
         </Btn>
       </Box>
