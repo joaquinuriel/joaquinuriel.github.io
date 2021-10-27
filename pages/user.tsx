@@ -103,19 +103,19 @@ export default function Account() {
           </fieldset>
         </form>
         <Box>
-          <Btn id="btn1" onClick={signUpHandler}>
-            Siguiente
-          </Btn>
-          {/* <Btn
+          <Btn
+              id="btn1"
             onClick={async () => {
               const [res, err] = await handle(popUp(auth, new google()));
               res ? setWillSignUp(false) : alert(err.code);
               console.log(res, err);
             }}
-            id="btn2"
           >
             Google
-          </Btn> */}
+          </Btn>
+          <Btn id="btn2" onClick={signUpHandler}>
+            Siguiente
+          </Btn>
         </Box>
         <motion.p
           layout
@@ -127,7 +127,7 @@ export default function Account() {
         >
           Iniciar sesion
         </motion.p>
-        <Box>
+        {/* <Box>
           <Btn
             cn="golden"
             id="btn2"
@@ -139,7 +139,7 @@ export default function Account() {
           >
             Google
           </Btn>
-        </Box>
+        </Box> */}
       </Layout>
     )
   ) : willSignIn ? (
@@ -196,19 +196,19 @@ export default function Account() {
         <motion.h1>Sign In</motion.h1>
         <Input {...email} />
         <Box>
-          <Btn id="btn1" onClick={() => setSigningIn(true)}>
-            Siguiente
-          </Btn>
-          {/* <Btn
+          <Btn
+              id="btn1"
             onClick={async () => {
               const [res, err] = await handle(popUp(auth, new google()));
               console.log(res, err);
               res ? setWillSignIn(false) : alert(err.code);
             }}
-            id="btn2"
           >
             Google
-          </Btn> */}
+          </Btn>
+          <Btn id="btn2" onClick={() => setSigningIn(true)}>
+            Siguiente
+          </Btn>
         </Box>
         <motion.p
           layout
@@ -220,7 +220,7 @@ export default function Account() {
         >
           Crear Cuenta
         </motion.p>
-        <Box>
+        {/* <Box>
           <Btn
             onClick={async () => {
               const [res, err] = await handle(popUp(auth, new google()));
@@ -231,7 +231,7 @@ export default function Account() {
           >
             Google
           </Btn>
-        </Box>
+        </Box> */}
       </Layout>
     )
   ) : (
