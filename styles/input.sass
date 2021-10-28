@@ -8,69 +8,37 @@
     background: var(--lighter)
     border-radius: 10px
     color: var(--light)
-    transition: 250ms
+    transition: 500ms
 
-    +dark
-        border: solid 3px var(--dark)
-        background: var(--dark)
-        &:hover
-            background: var(--darker)
-        &:focus-within
-            border: solid 3px var(--accent)
-            background: var(--darker)
-            color: var(--accent)
-
-    %hover
+    &:hover, .valid:hover, .invalid:hover
         background: white
 
-    %focus
+    &:focus-within, .valid:focus-within, .invalid:focus-within
         border: solid 3px var(--primary)
         background: white
         color: var(--primary)
 
-    &:hover
-        @extend %hover
+    +dark
+        border: solid 3px var(--dark)
+        background: var(--dark)
 
-    &:focus-within
-        @extend %focus
+        &:hover, .valid:hover, .invalid:hover
+            background: var(--darker)
+
+        &:focus-within, .valid:focus-within, .invalid:focus-within
+            border: solid 3px var(--accent)
+            background: var(--darker)
+            color: var(--accent)
 
     &.valid
         border: solid 3px var(--success)
         background: var(--success-bg)
         color: var(--success)
 
-        &:hover
-            @extend %hover
-
-        &:focus-within
-            @extend %focus
-
-        +dark
-            &:hover
-                background: var(--darker)
-            &:focus-within
-                border: solid 3px var(--accent)
-                background: var(--darker)
-                color: var(--accent)
-
     &.invalid
         border: solid 3px var(--error)
         background: var(--error-bg)
         color: var(--error)
-
-        &:hover
-            @extend %hover
-
-        &:focus-within
-            @extend %focus
-
-        +dark
-            &:hover
-                background: var(--darker)
-            &:focus-within
-                border: solid 3px var(--accent)
-                background: var(--darker)
-                color: var(--accent)
 
     input
         flex: 1
@@ -83,9 +51,15 @@
         font: 400 16px Inter
         outline: 0
 
-        @media screen and ( prefers-color-scheme: dark )
-            caret-color: var(--accent)
+        &:-webkit-autofill
+            -webkit-background-clip: text
+
+        &::placeholder
             color: var(--light)
+
+        +dark
+            caret-color: var(--accent)
+            color: var(--lighter)
 
     svg
         width: 24px

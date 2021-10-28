@@ -1,3 +1,11 @@
 @mixin dark
-  @media screen and ( prefers-color-scheme: dark )
+  @media ( prefers-color-scheme: dark )
+    @content
+
+@mixin tablet
+  @media ( min-width: 768px )
+    @content
+
+@mixin pc
+  @media ( min-width: 1024px )
     @content
