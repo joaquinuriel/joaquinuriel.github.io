@@ -1,11 +1,7 @@
 import {
-  createUserWithEmailAndPassword as signUp,
-  GoogleAuthProvider as google,
-  sendPasswordResetEmail as sendEmail,
-  signInWithEmailAndPassword as signIn,
-  signInWithPopup as popUp,
-  signOut,
-  updateProfile
+  createUserWithEmailAndPassword as signUp, GoogleAuthProvider as google,
+  sendPasswordResetEmail as sendEmail, signInWithEmailAndPassword as signIn,
+  signInWithPopup as popUp, signOut, updateProfile
 } from "firebase/auth";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -44,15 +40,12 @@ export default function Account() {
 
   console.log(willSignUp, signingUp, willSignIn, signingIn);
 
-  const signUpHandler = () => {
-    if (!eregex.test(email.value)) {
-      // email.setState("invalid");
-      alert("invalid email");
-    } else if (!regex.test(password.value)) {
-      // email.setState("invalid");
-      alert("invalid password");
-    } else setSigningUp(true);
-  };
+  const signUpHandler = () =>
+    !eregex.test(email.value)
+      ? alert("invalid email")
+      : !regex.test(password.value)
+      ? alert("invalid password")
+      : setSigningUp(true);
 
   const signingUpHandler = async () => {
     if (!regex.test(username.value)) return alert("invalid username");
@@ -64,7 +57,7 @@ export default function Account() {
   };
 
   const signInHandler = async () => {
-    const [res, err] = await handle(signIn(auth, email.value, password.value));
+    const [, err] = await handle(signIn(auth, email.value, password.value));
     if (err) return alert(err.code);
     setWillSignIn(false);
     setSigningIn(false);

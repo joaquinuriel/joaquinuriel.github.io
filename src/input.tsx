@@ -2,17 +2,18 @@ import { motion } from "framer-motion";
 import { At, Key, MagnifyingGlass } from "phosphor-react";
 import * as react from "react";
 import { InputHandler, Props } from "./types";
+import { auth } from "./app";
+import { fetchSignInMethodsForEmail } from "@firebase/auth";
 
 export function Input(props: Props) {
   const { placeholder, type, value } = props;
   const email = type === "email";
   const password = type === "password";
   const pattern = email ? /\S+@\S+\.[a-z]{2,}/gi : /\S{6,}/gi;
-  const check = () =>
-    value ? (pattern.test(value) ? "valid" : "invalid") : "empty";
+  const cn = value ? (pattern.test(value) ? "valid" : "invalid") : "empty";
 
   return (
-    <motion.div className={"input " + check()} layout>
+    <motion.div className={"input " + cn} layout>
       <motion.input
         {...props}
         autoComplete="on"
@@ -41,8 +42,6 @@ export function withInput(
     : "text"
 ) {
   const [value, set] = react.useState("");
-  // const [state, setState] = react.useState("");
-
   const onChange: InputHandler = (e) => set(e.target.value);
 
   return {
@@ -50,8 +49,6 @@ export function withInput(
     type,
     value,
     set,
-    // state,
-    // setState,
     onChange,
   };
 }

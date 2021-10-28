@@ -17,12 +17,14 @@ button
     outline: 0
     transition: 250ms
 
-    @media screen and ( prefers-color-scheme: dark )
-        background: var(--dark)
-        color: var(--lighter)
-
     &:hover
-        filter: brightness(.9)
+        filter: brightness(.9) 
+
+    +dark
+        background: var(--dark)
+        color: var(--lighter) 
+        &:hover
+            filter: brightness(1.1) 
 
 button + button, .golden
     background: var(--primary)

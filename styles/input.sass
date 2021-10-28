@@ -10,10 +10,10 @@
     color: var(--light)
     transition: 500ms
 
-    &:hover, .valid:hover, .invalid:hover
+    &:hover, &.valid:hover, &.invalid:hover
         background: white
 
-    &:focus-within, .valid:focus-within, .invalid:focus-within
+    &:focus-within, &.valid:focus-within, &.invalid:focus-within
         border: solid 3px var(--primary)
         background: white
         color: var(--primary)
@@ -22,10 +22,10 @@
         border: solid 3px var(--dark)
         background: var(--dark)
 
-        &:hover, .valid:hover, .invalid:hover
+        &:hover, &.valid:hover, &.invalid:hover
             background: var(--darker)
 
-        &:focus-within, .valid:focus-within, .invalid:focus-within
+        &:focus-within, &.valid:focus-within, &.invalid:focus-within
             border: solid 3px var(--accent)
             background: var(--darker)
             color: var(--accent)
@@ -53,6 +53,7 @@
 
         &:-webkit-autofill
             -webkit-background-clip: text
+            -webkit-text-fill-color: var(--dark)
 
         &::placeholder
             color: var(--light)
@@ -60,6 +61,9 @@
         +dark
             caret-color: var(--accent)
             color: var(--lighter)
+
+            &:-webkit-autofill
+                -webkit-text-fill-color: var(--lighter)
 
     svg
         width: 24px
