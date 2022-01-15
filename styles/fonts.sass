@@ -1,0 +1,35 @@
+@function flow($min, $max: $min * 2)
+    $x: ($max - $min)/(1920 - 375)
+    $y: $max - 1920 * $x
+    $vw: round(1000vw * $x) / 10
+    $px: round(1px * $y)
+    $xs: round(320px * $x + $px)
+    $xl: round(2560px * $x + $px)
+    // @return unquote("clamp(#{$xs}, calc(#{$vw} + #{$px}), #{$xl})")
+    @return clamp($xs, unquote("calc(#{$vw} + #{$px})"),$xl)
+
+@font-face
+    font-family: Manrope
+    font-weight: 200 800
+    src: url(/manrope.ttf)
+
+@font-face
+    font-family: Inter
+    font-weight: 100 900
+    src: url('/inter.woff2') 
+
+html 
+    font: 400 flow(16, 24) Inter
+
+h1
+    font: 800 flow(36) Manrope
+    line-height: 1.2
+    margin: 0 0 1em
+
+    &.xl
+        font-size: flow(48)
+
+h2
+    font: 600 flow(30) Manrope
+    line-height: 1.2
+    margin: 0

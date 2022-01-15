@@ -3,5 +3,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
     "source.organizeImports": true
-  }
+  },
+  "prettier.jsxSingleQuote": true,
+  "prettier.jsxBracketSameLine": true
 }

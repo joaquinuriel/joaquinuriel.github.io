@@ -1,41 +1,38 @@
-import { AnimateSharedLayout } from "framer-motion";
+import Nav from "src/components/nav";
+import { LayoutGroup } from "framer-motion";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { HouseSimple, MagnifyingGlass, User } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { Home, User } from "react-iconly";
 import { Props } from "src/types";
 
-export default function Layout({ children, title }: Props) {
-  const router = useRouter();
-  const route = router.route.slice(1)
-  console.log(route);
+export default function Layout({ children }: Props) {
+  return (
+    <LayoutGroup>
+      <main>{children}</main>
+      <Tabs />
+    </LayoutGroup>
+  );
+}
 
-  const [inputFocus, setInputFocus] = useState(false);
-  const [isDark, setIsDark] = useState(false);
-  useEffect(() => {
-    setInputFocus(document.activeElement?.tagName === "input");
-    setIsDark(matchMedia("(prefers-color-scheme: dark)").matches);
-    matchMedia("(prefers-color-scheme: dark)").onchange = () =>
-      setIsDark(matchMedia("(prefers-color-scheme: dark)").matches);
-  }, []);
-  const navColor = isDark ? "white" : "black";
+function Tabs() {
+  return (
+    <Nav>
+      <NavLink href='/' Icon={Home} />
+      <NavLink href='/user' Icon={User} />
+    </Nav>
+  );
+}
+
+function NavLink(props: Props) {
+  const { route } = useRouter();
+  const { theme } = useTheme();
+  const active = route === props.href;
+  const color = theme === "light" ? "black" : "white";
 
   return (
-    <AnimateSharedLayout>
-      <main>{children}</main>
-      <nav className="nav" hidden={inputFocus}>
-        <Link href="/" passHref>
-          <HouseSimple color={route ? "currentColor" : navColor} />
-        </Link>
-        <Link href="/search" passHref>
-          <MagnifyingGlass
-            color={route === "search" ? navColor : "currentColor"}
-          />
-        </Link>
-        <Link href="/user" passHref>
-          <User color={route === "user" ? navColor : "currentColor"} />
-        </Link>
-      </nav>
-    </AnimateSharedLayout>
+    <Link href={props.href} passHref>
+      <props.Icon set='curved' size={30} primaryColor={active ? color : "currentColor"} />
+    </Link>
   );
 }

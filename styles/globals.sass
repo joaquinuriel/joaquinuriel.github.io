@@ -1,16 +1,9 @@
-// stylelint-disable
-@import "nav"
+// @import "nav"
 @import "box"
 @import "input"
-
-=dark
-  @media screen and ( prefers-color-scheme: dark )
-    @content
+@import "fonts"
 
 $golden: linear-gradient(to right, #fede55, #fcbf49)
-// stylelint-enable
-
-
 
 html
   --primary: #4666ff
@@ -18,10 +11,12 @@ html
   --accent: #fcbf49
 
   --success: #5fa
+  --info: #5af
   --alert: #fa5
   --error: #f55
 
   --success-bg: #5fa3
+  --info-bg: #5af3
   --alert-bg: #fa53
   --error-bg: #f553
 
@@ -42,8 +37,7 @@ body
   padding: 25px
   margin: 0
   background: white
-  font-family: "Inter var"
-  // font-feature-settings: "salt"
+  // font-family: Inter
 
   @media (prefers-color-scheme: dark)
     background: var(--darker)
@@ -56,23 +50,15 @@ a
 *
   box-sizing: border-box
 
-@font-face
-  font-family: Manrope
-  font-weight: 200 800
-  src: url(/manrope.ttf)
-
 main
   display: flex
   flex-direction: column
   align-items: start
-  gap: 25px
+  gap: 10px
 
-h1
-  margin: 0
-  font-family: Manrope
-  font-size: 36px
-  font-weight: 800
-  line-height: 1.2
+code
+  font: inherit
+  color: var(--primary)
 
 .flexbox
   display: flex
